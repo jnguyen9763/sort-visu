@@ -1,0 +1,10 @@
+.array {
+	display: flex;
+	justify-content: center;
+	align-items: flex-end;
+}
+
+.array div {
+	background-color: lightskyblue;
+	margin: 0 1px;
+}
