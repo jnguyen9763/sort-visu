@@ -22,7 +22,7 @@ const selectionSort = (array, speed) => {
 	let min = null
 
 	interval = setInterval(() => {
-		if (j !== null && (j - 1 !== min || i !== min))
+		if (j !== null && (j - 1 !== min))
 			document.getElementById(j - 1).style.backgroundColor = 'lightskyblue'
 		if (i < array.length - 1) {
 			if (setMin) {
