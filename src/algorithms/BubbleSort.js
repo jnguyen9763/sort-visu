@@ -62,4 +62,4 @@ const swap = (array, leftIndex, rightIndex) => {
 	document.getElementById(rightIndex).style.height = height
 }
 
-export { bubbleSort, stopBubbleSort }
+export { bubbleSort, stopBubbleSort, swap }
