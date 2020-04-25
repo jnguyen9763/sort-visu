@@ -1,12 +1,26 @@
-const speed = 100
+let interval = null
 
-const bubbleSort = (array) => {
+/*
+let swapped
+
+do {
+	swapped = false
+	for (let i = 0; i < array.length - 1; i++) {
+		if (array[i] > array[i + 1]) {
+			swap
+			swapped = true
+		}
+	}
+} while (swapped)
+*/
+
+const bubbleSort = (array, speed) => {
 	const length = array.length
 	let iterations = 0
 	let i = 0
-	let swapped = false
+	let swapped
 
-	const interval = setInterval(() => {
+	interval = setInterval(() => {
 		if (i > 0) document.getElementById(i - 1).style.backgroundColor = 'lightskyblue'
 		if (i < length - 1 - iterations) {
 			// swap if the two elements are not sorted
@@ -34,6 +48,10 @@ const bubbleSort = (array) => {
 	}, speed)
 }
 
+const stopBubbleSort = () => {
+	if (interval !== null) clearInterval(interval)
+}
+
 const swap = (array, leftIndex, rightIndex) => {
 	const temp = array[leftIndex]
 	const height = document.getElementById(leftIndex).style.height
@@ -44,4 +62,4 @@ const swap = (array, leftIndex, rightIndex) => {
 	document.getElementById(rightIndex).style.height = height
 }
 
-export default bubbleSort
+export { bubbleSort, stopBubbleSort }
