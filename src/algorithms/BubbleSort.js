@@ -16,8 +16,8 @@ const runBubbleSort = (array) => {
 	do {
 		swapped = false
 		for (i = 0; i < array.length - 1 - iteration; i++) {
-			if (i > 0) addAnimation('rem-curr', i - 1, i)
-			addAnimation('curr', i, i + 1)
+			if (i === 0) addAnimation('curr', i, i + 1, undefined)
+			else addAnimation('curr', i, i + 1, i - 1)
 			if (array[i] > array[i + 1]) {
 				addAnimation('swap', i, i + 1)
 				swap(array, i, i + 1)
@@ -37,16 +37,15 @@ const animate = (speed) => {
 				case 'curr':
 					document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightcoral'
 					document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightcoral'
-					break
-				case 'rem-curr':
-					document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightskyblue'
+					if (animations[i].extra !== undefined)
+						document.getElementById(animations[i].extra).style.backgroundColor = 'lightskyblue'
 					break
 				case 'finish':
 					document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightskyblue'
 					document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightgreen'
 					break
 				default:
-					swapAnimation(animations[i].leftIndex, animations[i].rightIndex)
+				// swapAnimation(animations[i].leftIndex, animations[i].rightIndex)
 			}
 			i++
 		} else {
@@ -61,11 +60,12 @@ const animate = (speed) => {
 	}, speed)
 }
 
-const addAnimation = (type, id, otherID) => {
+const addAnimation = (type, leftIndex, rightIndex, extra) => {
 	animations.push({
 		type: type,
-		leftIndex: id,
-		rightIndex: otherID
+		leftIndex: leftIndex,
+		rightIndex: rightIndex,
+		extra: extra
 	})
 }
 
@@ -85,4 +85,4 @@ const swapAnimation = (leftIndex, rightIndex) => {
 	document.getElementById(rightIndex).style.height = height
 }
 
-export { bubbleSort, stopBubbleSort, swap, swapAnimation }
+export { bubbleSort, stopBubbleSort, swap, swapAnimation, addAnimation }
