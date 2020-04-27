@@ -61,7 +61,7 @@ const animate = (speed) => {
 	}, speed)
 }
 
-const addAnimation = (type, id, otherID = 0) => {
+const addAnimation = (type, id, otherID) => {
 	animations.push({
 		type: type,
 		leftIndex: id,
@@ -85,4 +85,4 @@ const swapAnimation = (leftIndex, rightIndex) => {
 	document.getElementById(rightIndex).style.height = height
 }
 
-export { bubbleSort, stopBubbleSort, swap }
+export { bubbleSort, stopBubbleSort, swap, swapAnimation }
