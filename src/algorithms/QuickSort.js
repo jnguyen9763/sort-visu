@@ -1,3 +1,5 @@
+import { swap, swapAnimation } from './BubbleSort'
+
 let interval = null
 let length
 let animations
@@ -87,18 +89,6 @@ const addAnimation = (type, id, otherID = 0) => {
 
 const stopQuickSort = () => {
 	if (interval !== null) clearInterval(interval)
-}
-
-const swap = (array, leftIndex, rightIndex) => {
-	const temp = array[leftIndex]
-	array[leftIndex] = array[rightIndex]
-	array[rightIndex] = temp
-}
-
-const swapAnimation = (leftIndex, rightIndex) => {
-	const height = document.getElementById(leftIndex).style.height
-	document.getElementById(leftIndex).style.height = document.getElementById(rightIndex).style.height
-	document.getElementById(rightIndex).style.height = height
 }
 
 export { quickSort, stopQuickSort }
