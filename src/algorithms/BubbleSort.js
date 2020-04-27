@@ -1,51 +1,72 @@
 let interval = null
-
-/*
-let swapped
-
-do {
-	swapped = false
-	for (let i = 0; i < array.length - 1; i++) {
-		if (array[i] > array[i + 1]) {
-			swap
-			swapped = true
-		}
-	}
-} while (swapped)
-*/
+let length
+let animations
 
 const bubbleSort = (array, speed) => {
-	const length = array.length
-	let iterations = 0
-	let i = 0
-	let swapped
+	length = array.length
+	animations = []
+	runBubbleSort(array)
+	animate(speed)
+}
 
-	interval = setInterval(() => {
-		if (i > 0) document.getElementById(i - 1).style.backgroundColor = 'lightskyblue'
-		if (i < length - 1 - iterations) {
-			// swap if the two elements are not sorted
-			document.getElementById(i).style.backgroundColor = 'lightcoral'
-			document.getElementById(i + 1).style.backgroundColor = 'lightcoral'
+const runBubbleSort = (array) => {
+	let swapped, i
+	let iteration = 0
+
+	do {
+		swapped = false
+		for (i = 0; i < array.length - 1 - iteration; i++) {
+			if (i > 0) addAnimation('rem-curr', i - 1, i)
+			addAnimation('curr', i, i + 1)
 			if (array[i] > array[i + 1]) {
+				addAnimation('swap', i, i + 1)
 				swap(array, i, i + 1)
 				swapped = true
 			}
-			i++;
-		} else {
-			if (!swapped) {
-				// finish sorting
-				for (let j = 0; j < i + 1; j++) {
-					document.getElementById(j).style.backgroundColor = 'lightgreen'
-				}
-				clearInterval(interval)
-			} else {
-				document.getElementById(i).style.backgroundColor = 'lightgreen'
-				iterations++
-				i = 0
-				swapped = false
-			}
 		}
+		addAnimation('finish', i - 1, i)
+		iteration++
+	} while (swapped)
+}
+
+const animate = (speed) => {
+	let i = 0
+	interval = setInterval(() => {
+		if (i < animations.length) {
+			switch (animations[i].type) {
+				case 'curr':
+					document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightcoral'
+					document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightcoral'
+					break
+				case 'rem-curr':
+					document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightskyblue'
+					break
+				case 'finish':
+					document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightskyblue'
+					document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightgreen'
+					break
+				default:
+					swapAnimation(animations[i].leftIndex, animations[i].rightIndex)
+			}
+			i++
+		} else {
+			for (let i = 0; i < length; i++) {
+				if (document.getElementById(i).style.backgroundColor !== 'lightgreen') {
+					document.getElementById(i).style.backgroundColor = 'lightgreen'
+				}
+			}
+			clearInterval(interval)
+		}
+
 	}, speed)
+}
+
+const addAnimation = (type, id, otherID = 0) => {
+	animations.push({
+		type: type,
+		leftIndex: id,
+		rightIndex: otherID
+	})
 }
 
 const stopBubbleSort = () => {
@@ -54,10 +75,12 @@ const stopBubbleSort = () => {
 
 const swap = (array, leftIndex, rightIndex) => {
 	const temp = array[leftIndex]
-	const height = document.getElementById(leftIndex).style.height
 	array[leftIndex] = array[rightIndex]
 	array[rightIndex] = temp
-	// animations
+}
+
+const swapAnimation = (leftIndex, rightIndex) => {
+	const height = document.getElementById(leftIndex).style.height
 	document.getElementById(leftIndex).style.height = document.getElementById(rightIndex).style.height
 	document.getElementById(rightIndex).style.height = height
 }

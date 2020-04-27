@@ -8,9 +8,9 @@ import { mergeSort, stopMergeSort } from '../../algorithms/MergeSort.js'
 
 
 const barWidth = 1
-const widthPercentage = 75
+const widthPercentage = 95
 const heightPercentage = 75
-const speed = 10;
+const speed = 1;
 
 const generateRandomArray = () => {
 	const array = []
@@ -92,9 +92,25 @@ function SortingVisualizer() {
 		setArray(generateRandomArray())
 	}
 
+	const sortCurrentArray = () => {
+		const arrayCopy = [...array]
+		arrayCopy.sort((a, b) => a - b)
+		setArray(arrayCopy)
+		resetArrayAnimation()
+	}
+
+	const reverseSortCurrentArray = () => {
+		const arrayCopy = [...array]
+		arrayCopy.sort((a, b) => a - b).reverse()
+		setArray(arrayCopy)
+		resetArrayAnimation()
+	}
+
 	return (
 		<div className={styles.main}>
 			<button onClick={() => generate()}>Generate</button>
+			<button onClick={() => sortCurrentArray()}>Sort</button>
+			<button onClick={() => reverseSortCurrentArray()}>Reverse Sort</button>
 			<button onClick={() => runBubbleSort()}>Bubble Sort</button>
 			<button onClick={() => runInsertionSort()}>Insertion Sort</button>
 			<button onClick={() => runSelectionSort()}>Selection Sort</button>
