@@ -1,79 +1,101 @@
 let interval = null
+let length
 let animations
-let test = []
 
 const mergeSort = (array, speed) => {
+	length = array.length
 	animations = []
-	runMergeSort(array, 0, array.length - 1, 0)
+	runMergeSort(array, 0, array.length - 1, speed)
 }
 
-const runMergeSort = (array, start, end, treeLevel) => {
+const runMergeSort = (array, start, end, speed) => {
 	if (start < end) {
-		let initialTreeLevel = treeLevel
 		let middle = Math.floor((start + end) / 2)
-		runMergeSort(array, start, middle, treeLevel + 1)
-		runMergeSort(array, middle + 1, end, treeLevel + 1)
-		merge(array, start, middle, end, treeLevel)
-		if (initialTreeLevel === 0) animate(100)
+		runMergeSort(array, start, middle, speed)
+		runMergeSort(array, middle + 1, end, speed)
+		merge(array, start, middle, end)
+		if (start === 0 && end === array.length - 1) animate(speed)
 	}
 }
 
 const animate = (speed) => {
-	console.log(test.sort())
-	let i = animations.length - 1
+	let i = 0
 	interval = setInterval(() => {
-		if (i >= 0) {
-			for (let j = 0; j < animations[i].length; j++) {
-				document.getElementById(animations[i][j].i).style.height = animations[i][j].newHeight
+		if (i < animations.length) {
+			switch (animations[i].type) {
+				case 'new-height':
+					document.getElementById(animations[i].index).style.height = animations[i].newHeight
+					break
+				case 'curr':
+					document.getElementById(animations[i].index).style.backgroundColor = 'lightcoral'
+					break
+				default:
+					document.getElementById(animations[i].index).style.backgroundColor = 'lightskyblue'
 			}
-			i--
+			i++
 		} else {
+			for (let i = 0; i < length; i++) {
+				document.getElementById(i).style.backgroundColor = 'lightgreen'
+			}
 			clearInterval(interval)
 		}
 
 	}, speed)
 }
 
-const merge = (array, start, middle, end, treeLevel) => {
-	test.push(treeLevel)
-	// console.log("INIT", treeLevel)
-	let leftArray = array.slice(start, middle + 1)
-	let rightArray = array.slice(middle + 1, end + 1)
+const merge = (array, start, middle, end) => {
+	const leftArray = array.slice(start, middle + 1)
+	const rightArray = array.slice(middle + 1, end + 1)
 	let leftCurr = 0
 	let rightCurr = 0
 	let index = start
+	let leftRemain = false
 
 	while (leftCurr < leftArray.length && rightCurr < rightArray.length) {
-		// treeLevel++
+		if (index > start) addAnimation('rem-curr', index - 1)
+		addAnimation('curr', index)
 		if (leftArray[leftCurr] < rightArray[rightCurr]) {
-			addAnimation('new-height', treeLevel, index, `${leftArray[leftCurr]}vh`)
+			addAnimation('new-height', index, `${leftArray[leftCurr]}vh`)
 			array[index++] = leftArray[leftCurr++]
 		} else {
-			addAnimation('new-height', treeLevel, index, `${rightArray[rightCurr]}vh`)
+			addAnimation('new-height', index, `${rightArray[rightCurr]}vh`)
 			array[index++] = rightArray[rightCurr++]
 		}
 	}
 
 	while (leftCurr < leftArray.length) {
-		// treeLevel++
-		addAnimation('new-height', treeLevel, index, `${leftArray[leftCurr]}vh`)
+		leftRemain = true
+		addAnimation('rem-curr', index - 1)
+		addAnimation('curr', index)
+		addAnimation('new-height', index, `${leftArray[leftCurr]}vh`)
 		array[index++] = leftArray[leftCurr++]
 	}
+	if (leftRemain) addAnimation('rem-curr', index - 1)
 
 	while (rightCurr < rightArray.length) {
-		// treeLevel++
-		addAnimation('new-height', treeLevel, index, `${rightArray[rightCurr]}vh`)
+		addAnimation('rem-curr', index - 1)
+		addAnimation('curr', index)
+		addAnimation('new-height', index, `${rightArray[rightCurr]}vh`)
 		array[index++] = rightArray[rightCurr++]
 	}
+
+	addAnimation('rem-curr', index - 1)
+
 }
 
-const addAnimation = (type, index, i, newHeight) => {
-	if (animations[index] === undefined) animations[index] = []
-	animations[index].push({
-		type: type,
-		i: i,
-		newHeight: newHeight
-	})
+const addAnimation = (type, id, newHeight = 0) => {
+	if (type === 'new-height') {
+		animations.push({
+			type: type,
+			index: id,
+			newHeight: newHeight
+		})
+	} else {
+		animations.push({
+			type: type,
+			index: id
+		})
+	}
 }
 
 const stopMergeSort = () => {
