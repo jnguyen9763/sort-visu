@@ -104,8 +104,6 @@ const swapAnimation = (leftIndex, rightIndex) => {
 	const height = document.getElementById(leftIndex).style.height
 	document.getElementById(leftIndex).style.height = document.getElementById(rightIndex).style.height
 	document.getElementById(rightIndex).style.height = height
-	// document.getElementById(leftIndex).style.backgroundColor = 'lightcoral'
-	// document.getElementById(rightIndex).style.backgroundColor = 'lightcoral'
 }
 
 export { quickSort, stopQuickSort }

@@ -4,9 +4,10 @@ import { bubbleSort, stopBubbleSort } from '../../algorithms/BubbleSort.js'
 import { insertionSort, stopInsertionSort } from '../../algorithms/InsertionSort.js'
 import { selectionSort, stopSelectionSort } from '../../algorithms/SelectionSort.js'
 import { quickSort, stopQuickSort } from '../../algorithms/QuickSort.js'
+import { mergeSort, stopMergeSort } from '../../algorithms/MergeSort.js'
 
 
-const barWidth = 0.5
+const barWidth = 1
 const widthPercentage = 75
 const heightPercentage = 75
 const speed = 1;
@@ -50,6 +51,12 @@ function SortingVisualizer() {
 		quickSort([...array], speed)
 	}
 
+	const runMergeSort = () => {
+		setCurrSort('mergeSort')
+		resetArrayAnimation()
+		mergeSort([...array], speed)
+	}
+
 	const resetArrayAnimation = () => {
 		stop()
 		for (let i = 0; i < array.length; i++) {
@@ -72,6 +79,9 @@ function SortingVisualizer() {
 			case 'quickSort':
 				stopQuickSort()
 				break
+			case 'mergeSort':
+				stopMergeSort()
+				break
 			default:
 				break
 		}
@@ -89,6 +99,7 @@ function SortingVisualizer() {
 			<button onClick={() => runInsertionSort()}>Insertion Sort</button>
 			<button onClick={() => runSelectionSort()}>Selection Sort</button>
 			<button onClick={() => runQuickSort()}>Quick Sort</button>
+			<button onClick={() => runMergeSort()}>Merge Sort</button>
 			<div className={styles.array} style={{ height: `${(100 - heightPercentage) / 2 + heightPercentage}vh` }}>
 				{array.map((value, i) => {
 					return <div id={i} key={i} style={{ height: `${value}vh`, width: `${barWidth}vw` }}></div>
