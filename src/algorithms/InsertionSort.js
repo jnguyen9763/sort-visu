@@ -38,9 +38,9 @@ const animate = (speed) => {
 					document.getElementById(animations[i].extra).style.backgroundColor = 'lightgreen'
 					break
 				default:
+					swapAnimation(animations[i].index, animations[i].extra)
 					document.getElementById(animations[i].index).style.backgroundColor = 'lightgreen'
 					document.getElementById(animations[i].extra).style.backgroundColor = 'lightcoral'
-					swapAnimation(animations[i].index, animations[i].extra)
 			}
 			i++
 		} else {
