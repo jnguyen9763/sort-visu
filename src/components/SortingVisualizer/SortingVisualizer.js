@@ -10,7 +10,7 @@ import { mergeSort, stopMergeSort } from '../../algorithms/MergeSort.js'
 const barWidth = 1
 const widthPercentage = 75
 const heightPercentage = 75
-const speed = 1;
+const speed = 10;
 
 const generateRandomArray = () => {
 	const array = []

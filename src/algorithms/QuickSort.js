@@ -5,17 +5,16 @@ let animations
 const quickSort = (array, speed) => {
 	length = array.length
 	animations = []
-	runQuickSort(array, 0, length - 1, 0, speed)
+	runQuickSort(array, 0, length - 1, speed)
 }
 
-const runQuickSort = (array, start, end, treeLevel, speed) => {
+const runQuickSort = (array, start, end, speed) => {
 	if (start < end) {
-		let initTreeLevel = treeLevel
-		let partitionObject = partition(array, start, end, treeLevel)
-		addAnimation('pivot', partitionObject.treeLevel, partitionObject.pivot) // color pivot
-		runQuickSort(array, start, partitionObject.pivot - 1, partitionObject.treeLevel, speed)
-		runQuickSort(array, partitionObject.pivot + 1, end, partitionObject.treeLevel, speed)
-		if (initTreeLevel === 0) animate(speed)
+		let pivot = partition(array, start, end)
+		addAnimation('pivot', pivot) // color pivot
+		runQuickSort(array, start, pivot - 1, speed)
+		runQuickSort(array, pivot + 1, end, speed)
+		if (start === 0 && end === array.length - 1) animate(speed)
 	}
 }
 
@@ -23,16 +22,18 @@ const animate = (speed) => {
 	let i = 0
 	interval = setInterval(() => {
 		if (i < animations.length) {
-			for (let j = 0; j < animations[i].length; j++) {
-				// use switch statement
-				if (animations[i][j].type === 'curr')
-					document.getElementById(animations[i][j].index).style.backgroundColor = 'lightcoral'
-				else if (animations[i][j].type === 'rem-curr')
-					document.getElementById(animations[i][j].index).style.backgroundColor = 'lightskyblue'
-				else if (animations[i][j].type === 'swap')
-					swapAnimation(animations[i][j].leftIndex, animations[i][j].rightIndex)
-				else
-					document.getElementById(animations[i][j].index).style.backgroundColor = 'lightgreen'
+			switch (animations[i].type) {
+				case 'curr':
+					document.getElementById(animations[i].index).style.backgroundColor = 'lightcoral'
+					break
+				case 'rem-curr':
+					document.getElementById(animations[i].index).style.backgroundColor = 'lightskyblue'
+					break
+				case 'swap':
+					swapAnimation(animations[i].leftIndex, animations[i].rightIndex)
+					break
+				default:
+					document.getElementById(animations[i].index).style.backgroundColor = 'lightgreen'
 			}
 			i++
 		} else {
@@ -48,41 +49,36 @@ const animate = (speed) => {
 }
 
 // return the new index the pivot is at
-const partition = (array, start, end, treeLevel) => {
+const partition = (array, start, end) => {
 	let pivotValue = array[end]
 	let newPivotIndex = start
 
 	for (let i = start; i < end; i++) {
-		if (i > start) addAnimation('rem-curr', treeLevel, i - 1)
-		addAnimation('curr', treeLevel++, i)
+		if (i > start) addAnimation('rem-curr', i - 1)
+		addAnimation('curr', i)
 		if (array[i] < pivotValue) {
-			addAnimation('swap', treeLevel, newPivotIndex, i)
+			addAnimation('swap', newPivotIndex, i)
 			swap(array, newPivotIndex, i)
 			newPivotIndex++
 		}
 	}
 
-
-	addAnimation('rem-curr', treeLevel, end - 1)
-	addAnimation('swap', treeLevel++, newPivotIndex, end)
+	addAnimation('rem-curr', end - 1)
+	addAnimation('swap', newPivotIndex, end)
 	swap(array, newPivotIndex, end)
 
-	return {
-		pivot: newPivotIndex,
-		treeLevel: treeLevel
-	}
+	return newPivotIndex
 }
 
-const addAnimation = (type, index, id, otherID = 0) => {
-	if (animations[index] === undefined) animations[index] = []
+const addAnimation = (type, id, otherID = 0) => {
 	if (type === 'swap') {
-		animations[index].push({
+		animations.push({
 			type: type,
 			leftIndex: id,
 			rightIndex: otherID
 		})
 	} else {
-		animations[index].push({
+		animations.push({
 			type: type,
 			index: id
 		})
@@ -100,7 +96,6 @@ const swap = (array, leftIndex, rightIndex) => {
 }
 
 const swapAnimation = (leftIndex, rightIndex) => {
-	// animations
 	const height = document.getElementById(leftIndex).style.height
 	document.getElementById(leftIndex).style.height = document.getElementById(rightIndex).style.height
 	document.getElementById(rightIndex).style.height = height
