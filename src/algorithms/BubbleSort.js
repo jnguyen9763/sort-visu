@@ -45,10 +45,11 @@ const animate = (speed) => {
 					document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightgreen'
 					break
 				default:
-				// swapAnimation(animations[i].leftIndex, animations[i].rightIndex)
+					swapAnimation(animations[i].leftIndex, animations[i].rightIndex)
 			}
 			i++
 		} else {
+			// for when bubble sort ends early due to no more swaps
 			for (let i = 0; i < length; i++) {
 				if (document.getElementById(i).style.backgroundColor !== 'lightgreen') {
 					document.getElementById(i).style.backgroundColor = 'lightgreen'
