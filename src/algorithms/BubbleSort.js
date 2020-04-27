@@ -84,6 +84,8 @@ const swapAnimation = (leftIndex, rightIndex) => {
 	const height = document.getElementById(leftIndex).style.height
 	document.getElementById(leftIndex).style.height = document.getElementById(rightIndex).style.height
 	document.getElementById(rightIndex).style.height = height
+	document.getElementById(leftIndex).style.backgroundColor = 'orange'
+	document.getElementById(rightIndex).style.backgroundColor = 'orange'
 }
 
 export { bubbleSort, stopBubbleSort, swap, swapAnimation, addAnimation }
