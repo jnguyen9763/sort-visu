@@ -30,18 +30,14 @@ const animate = (speed) => {
 	let i = 0
 	interval = setInterval(() => {
 		if (i < animations.length) {
-			switch (animations[i].type) {
-				case 'curr':
-					console.log("CURR")
-					if (animations[i].index !== undefined)
-						document.getElementById(animations[i].index).style.backgroundColor = 'lightcoral'
-					document.getElementById(animations[i].extra).style.backgroundColor = 'lightgreen'
-					break
-				default:
-					console.log("SWAP")
-					swapAnimation(animations[i].index, animations[i].extra)
-					document.getElementById(animations[i].index).style.backgroundColor = 'lightgreen'
-					document.getElementById(animations[i].extra).style.backgroundColor = 'lightcoral'
+			if (animations[i].type === 'curr') {
+				if (animations[i].index !== undefined)
+					document.getElementById(animations[i].index).style.backgroundColor = 'lightcoral'
+				document.getElementById(animations[i].extra).style.backgroundColor = 'lightgreen'
+			} else {
+				swapAnimation(animations[i].index, animations[i].extra)
+				document.getElementById(animations[i].index).style.backgroundColor = 'lightgreen'
+				document.getElementById(animations[i].extra).style.backgroundColor = 'lightcoral'
 			}
 			i++
 		} else {
