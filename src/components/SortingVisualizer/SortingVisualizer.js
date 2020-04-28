@@ -10,7 +10,6 @@ import { mergeSort, stopMergeSort } from '../../algorithms/MergeSort.js'
 const barWidth = 1
 const widthPercentage = 75
 const heightPercentage = 75
-const speed = 100;
 
 const generateRandomArray = () => {
 	const array = []
@@ -26,6 +25,7 @@ const generateRandomArray = () => {
 function SortingVisualizer() {
 	const [array, setArray] = useState(generateRandomArray())
 	const [currSort, setCurrSort] = useState('')
+	const [speed, setSpeed] = useState(1)
 
 	const runBubbleSort = () => {
 		setCurrSort('bubbleSort')
@@ -108,6 +108,7 @@ function SortingVisualizer() {
 
 	return (
 		<>
+			<input type="text" value={speed} onChange={(e) => setSpeed(e.target.value)} />
 			<button onClick={() => generate()}>Generate</button>
 			<button onClick={() => sortCurrentArray()}>Sort</button>
 			<button onClick={() => reverseSortCurrentArray()}>Reverse Sort</button>
