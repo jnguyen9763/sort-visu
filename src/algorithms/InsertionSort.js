@@ -47,7 +47,7 @@ const animate = (speed) => {
 	}, speed)
 }
 
-const addAnimation = (type, index, extra = 0) => {
+const addAnimation = (type, index, extra) => {
 	animations.push({
 		type: type,
 		index: index,
