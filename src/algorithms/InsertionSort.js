@@ -10,19 +10,20 @@ const insertionSort = (array, speed) => {
 }
 
 const runInsertionSort = (array) => {
+	let prev = 0
 	for (let i = 1; i < array.length; i++) {
 		let curr = array[i]
 		let j = i - 1;
-		addAnimation('curr', j)
+		addAnimation('curr', i, prev)
 		while (j >= 0 && array[j] > curr) {
 			addAnimation('new-height', j + 1, j)
 			array[j + 1] = array[j]
 			j--
 		}
-		if (j === i - 1) addAnimation('finish', i, j)
-		else addAnimation('finish', i, j + 1)
+		prev = j + 1
 		array[j + 1] = curr
 	}
+	addAnimation('curr', undefined, prev)
 }
 
 const animate = (speed) => {
@@ -31,13 +32,13 @@ const animate = (speed) => {
 		if (i < animations.length) {
 			switch (animations[i].type) {
 				case 'curr':
-					document.getElementById(animations[i].index).style.backgroundColor = 'lightcoral'
-					break
-				case 'finish':
-					document.getElementById(animations[i].index).style.backgroundColor = 'lightgreen'
+					console.log("CURR")
+					if (animations[i].index !== undefined)
+						document.getElementById(animations[i].index).style.backgroundColor = 'lightcoral'
 					document.getElementById(animations[i].extra).style.backgroundColor = 'lightgreen'
 					break
 				default:
+					console.log("SWAP")
 					swapAnimation(animations[i].index, animations[i].extra)
 					document.getElementById(animations[i].index).style.backgroundColor = 'lightgreen'
 					document.getElementById(animations[i].extra).style.backgroundColor = 'lightcoral'
