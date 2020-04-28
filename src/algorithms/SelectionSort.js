@@ -12,20 +12,22 @@ const selectionSort = (array, speed) => {
 }
 
 const runSelectionSort = (array) => {
+	let prevMin
 	for (let i = 0; i < array.length - 1; i++) {
 		// find min
 		let min = i
 		let j
-		addAnimation('min', min, undefined)
+		if (i === 0) addAnimation('min', min, undefined, undefined)
+		else addAnimation('swap', min, prevMin, i - 1)
 		for (j = i + 1; j < array.length; j++) {
-			if (j === i + 1) addAnimation('curr', j, undefined)
-			else addAnimation('curr', j, j - 1)
 			if (array[min] > array[j]) {
-				addAnimation('min', j, min)
+				addAnimation('min', j, min, j - 1)
 				min = j
+			} else {
+				addAnimation('curr', j, j - 1)
 			}
 		}
-		addAnimation('finish', i, min, j - 1)
+		prevMin = min
 		swap(array, i, min)
 	}
 }
@@ -37,26 +39,26 @@ const animate = (speed) => {
 			switch (animations[i].type) {
 				case 'curr':
 					document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightcoral'
-					if (animations[i].rightIndex !== undefined &&
-						document.getElementById(animations[i].rightIndex).style.backgroundColor !== 'lightgray')
+					if (document.getElementById(animations[i].rightIndex).style.backgroundColor !== 'lightgray')
 						document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightskyblue'
 					break
 				case 'min':
 					document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightgray'
-					if (animations[i].rightIndex !== undefined)
+					if (animations[i].rightIndex !== undefined) {
 						document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightskyblue'
+						document.getElementById(animations[i].extra).style.backgroundColor = 'lightskyblue'
+					}
 					break
 				default:
-					document.getElementById(animations[i].extra).style.backgroundColor = 'lightskyblue'
-					swapAnimation(animations[i].leftIndex, animations[i].rightIndex)
-					document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightgreen'
-					if (animations[i].leftIndex === animations[i].rightIndex)
-						document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightgreen'
-					else
-						document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightskyblue'
+					document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightgray'
+					swapAnimation(animations[i].rightIndex, animations[i].extra)
+					document.getElementById(length - 1).style.backgroundColor = 'lightskyblue'
+					document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightskyblue'
+					document.getElementById(animations[i].extra).style.backgroundColor = 'lightgreen'
 			}
 			i++
 		} else {
+			document.getElementById(length - 2).style.backgroundColor = 'lightgreen'
 			document.getElementById(length - 1).style.backgroundColor = 'lightgreen'
 			clearInterval(interval)
 		}
