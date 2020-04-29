@@ -88,11 +88,13 @@ function SortingVisualizer() {
 	}
 
 	const generate = () => {
+		document.querySelector('#comparison').innerHTML = 0
 		stop()
 		setArray(generateRandomArray())
 	}
 
 	const sortCurrentArray = () => {
+		document.querySelector('#comparison').innerHTML = 0
 		const arrayCopy = [...array]
 		arrayCopy.sort((a, b) => a - b)
 		setArray(arrayCopy)
@@ -100,6 +102,7 @@ function SortingVisualizer() {
 	}
 
 	const reverseSortCurrentArray = () => {
+		document.querySelector('#comparison').innerHTML = 0
 		const arrayCopy = [...array]
 		arrayCopy.sort((a, b) => a - b).reverse()
 		setArray(arrayCopy)
@@ -117,6 +120,7 @@ function SortingVisualizer() {
 			<button onClick={() => runSelectionSort()}>Selection Sort</button>
 			<button onClick={() => runQuickSort()}>Quick Sort</button>
 			<button onClick={() => runMergeSort()}>Merge Sort</button>
+			<div>Comparisons: <span id="comparison">0</span></div>
 			<div className={styles.array} style={{ height: `${(100 - heightPercentage) / 2 + heightPercentage}vh` }}>
 				{array.map((value, i) => {
 					return <div

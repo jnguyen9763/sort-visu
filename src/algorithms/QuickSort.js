@@ -2,10 +2,12 @@ import { swap, swapAnimation } from './BubbleSort'
 
 let interval = null
 let length
+let comparisons
 let animations
 
 const quickSort = (array, speed) => {
 	length = array.length
+	comparisons = 0
 	animations = []
 	runQuickSort(array, 0, length - 1, speed)
 }
@@ -25,12 +27,14 @@ const animate = (speed) => {
 		if (i < animations.length) {
 			switch (animations[i].type) {
 				case 'curr':
+					document.querySelector('#comparison').innerHTML = ++comparisons
 					document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightcoral'
 					if (animations[i].rightIndex !== undefined &&
 						document.getElementById(animations[i].rightIndex).style.backgroundColor !== 'lightgreen')
 						document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightskyblue'
 					break
 				case 'swap':
+					document.querySelector('#comparison').innerHTML = ++comparisons
 					swapAnimation(animations[i].leftIndex, animations[i].rightIndex)
 					document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightcoral'
 					if (animations[i].extra !== undefined &&

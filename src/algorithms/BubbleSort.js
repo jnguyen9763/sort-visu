@@ -1,10 +1,12 @@
 let interval = null
 let length
 let animations
+let comparisons
 
 const bubbleSort = (array, speed) => {
 	length = array.length
 	animations = []
+	comparisons = 0
 	runBubbleSort(array)
 	animate(speed)
 }
@@ -38,6 +40,7 @@ const animate = (speed) => {
 	interval = setInterval(() => {
 		switch (animations[i].type) {
 			case 'curr':
+				document.querySelector('#comparison').innerHTML = ++comparisons
 				document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightcoral'
 				document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightcoral'
 				if (animations[i].extra !== undefined)
@@ -56,6 +59,7 @@ const animate = (speed) => {
 				}
 				break
 			default:
+				document.querySelector('#comparison').innerHTML = ++comparisons
 				swapAnimation(animations[i].leftIndex, animations[i].rightIndex)
 				document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightcoral'
 				document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightcoral'

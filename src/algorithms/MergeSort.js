@@ -1,9 +1,11 @@
 let interval = null
 let length
+let comparisons
 let animations
 
 const mergeSort = (array, speed) => {
 	length = array.length
+	comparisons = 0
 	animations = []
 	runMergeSort(array, 0, array.length - 1, speed)
 }
@@ -24,6 +26,7 @@ const animate = (speed) => {
 		if (i < animations.length) {
 			switch (animations[i].type) {
 				case 'new-height':
+					document.querySelector('#comparison').innerHTML = ++comparisons
 					document.getElementById(animations[i].index).style.backgroundColor = 'lightcoral'
 					if (animations[i].index > 0)
 						document.getElementById(animations[i].index - 1).style.backgroundColor = 'lightskyblue'

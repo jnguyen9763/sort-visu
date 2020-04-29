@@ -2,10 +2,12 @@ import { swap, swapAnimation } from './BubbleSort.js'
 
 let interval = null
 let length
+let comparisons
 let animations
 
 const selectionSort = (array, speed) => {
 	length = array.length
+	comparisons = 0
 	animations = []
 	runSelectionSort(array)
 	animate(speed)
@@ -38,6 +40,7 @@ const animate = (speed) => {
 		if (i < animations.length) {
 			switch (animations[i].type) {
 				case 'curr':
+					document.querySelector('#comparison').innerHTML = ++comparisons
 					document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightcoral'
 					if (document.getElementById(animations[i].rightIndex).style.backgroundColor !== 'lightgray')
 						document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightskyblue'
@@ -45,6 +48,7 @@ const animate = (speed) => {
 				case 'min':
 					document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightgray'
 					if (animations[i].rightIndex !== undefined) {
+						document.querySelector('#comparison').innerHTML = ++comparisons
 						document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightskyblue'
 						document.getElementById(animations[i].extra).style.backgroundColor = 'lightskyblue'
 					}
