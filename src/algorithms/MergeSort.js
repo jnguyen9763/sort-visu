@@ -24,10 +24,10 @@ const animate = (speed) => {
 		if (i < animations.length) {
 			switch (animations[i].type) {
 				case 'new-height':
-					document.getElementById(animations[i].index).style.height = animations[i].newHeight
-					break
-				case 'curr':
 					document.getElementById(animations[i].index).style.backgroundColor = 'lightcoral'
+					if (animations[i].index > 0)
+						document.getElementById(animations[i].index - 1).style.backgroundColor = 'lightskyblue'
+					document.getElementById(animations[i].index).style.height = animations[i].newHeight
 					break
 				default:
 					document.getElementById(animations[i].index).style.backgroundColor = 'lightskyblue'
@@ -49,11 +49,8 @@ const merge = (array, start, middle, end) => {
 	let leftCurr = 0
 	let rightCurr = 0
 	let index = start
-	let leftRemain = false
 
 	while (leftCurr < leftArray.length && rightCurr < rightArray.length) {
-		if (index > start) addAnimation('rem-curr', index - 1)
-		addAnimation('curr', index)
 		if (leftArray[leftCurr] < rightArray[rightCurr]) {
 			addAnimation('new-height', index, `${leftArray[leftCurr]}vh`)
 			array[index++] = leftArray[leftCurr++]
@@ -64,17 +61,11 @@ const merge = (array, start, middle, end) => {
 	}
 
 	while (leftCurr < leftArray.length) {
-		leftRemain = true
-		addAnimation('rem-curr', index - 1)
-		addAnimation('curr', index)
 		addAnimation('new-height', index, `${leftArray[leftCurr]}vh`)
 		array[index++] = leftArray[leftCurr++]
 	}
-	if (leftRemain) addAnimation('rem-curr', index - 1)
 
 	while (rightCurr < rightArray.length) {
-		addAnimation('rem-curr', index - 1)
-		addAnimation('curr', index)
 		addAnimation('new-height', index, `${rightArray[rightCurr]}vh`)
 		array[index++] = rightArray[rightCurr++]
 	}
