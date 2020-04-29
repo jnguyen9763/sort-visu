@@ -33,8 +33,10 @@ const animate = (speed) => {
 	interval = setInterval(() => {
 		if (i < animations.length) {
 			if (animations[i].type === 'curr') {
-				if (animations[i].index !== undefined)
+				if (animations[i].index !== undefined) {
+					document.querySelector('#comparison').innerHTML = ++comparisons
 					document.getElementById(animations[i].index).style.backgroundColor = 'lightcoral'
+				}
 				document.getElementById(animations[i].extra).style.backgroundColor = 'lightgreen'
 			} else {
 				document.querySelector('#comparison').innerHTML = ++comparisons

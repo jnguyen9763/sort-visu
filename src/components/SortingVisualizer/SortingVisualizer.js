@@ -58,6 +58,7 @@ function SortingVisualizer() {
 	}
 
 	const resetArrayAnimation = () => {
+		document.querySelector('#comparison').innerHTML = 0
 		stop()
 		for (let i = 0; i < array.length; i++) {
 			document.getElementById(i).style.height = `${array[i]}vh`
@@ -94,7 +95,6 @@ function SortingVisualizer() {
 	}
 
 	const sortCurrentArray = () => {
-		document.querySelector('#comparison').innerHTML = 0
 		const arrayCopy = [...array]
 		arrayCopy.sort((a, b) => a - b)
 		setArray(arrayCopy)
@@ -102,7 +102,6 @@ function SortingVisualizer() {
 	}
 
 	const reverseSortCurrentArray = () => {
-		document.querySelector('#comparison').innerHTML = 0
 		const arrayCopy = [...array]
 		arrayCopy.sort((a, b) => a - b).reverse()
 		setArray(arrayCopy)
