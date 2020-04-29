@@ -51,15 +51,6 @@ const animate = (speed) => {
 					// checks if there are any bars from previous iteration that needs to be green
 					if (document.getElementById(animations[i].extra).style.backgroundColor !== 'lightgreen')
 						document.getElementById(animations[i].extra).style.backgroundColor = 'lightskyblue'
-					// check if any bars after pivot with the same height needs to be green
-					const height = document.getElementById(animations[i].leftIndex).style.height
-					let marker = animations[i].leftIndex + 1
-					while (marker < length &&
-						document.getElementById(marker).style.backgroundColor !== 'lightgreen' &&
-						document.getElementById(marker).style.height === height) {
-						document.getElementById(marker).style.backgroundColor = 'lightgreen'
-						marker++
-					}
 			}
 			i++
 		} else {
