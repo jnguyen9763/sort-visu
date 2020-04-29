@@ -40,14 +40,31 @@ const animate = (speed) => {
 				default:
 					swapAnimation(animations[i].leftIndex, animations[i].rightIndex)
 					document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightgreen'
+					// checks if left bar needs to be green
+					if (animations[i].leftIndex > 0 && (animations[i].leftIndex === 1 ||
+						document.getElementById(animations[i].leftIndex - 2).style.backgroundColor === 'lightgreen'))
+						document.getElementById(animations[i].leftIndex - 1).style.backgroundColor = 'lightgreen'
+					// checks if right bar needs to be green
+					if (animations[i].leftIndex < length - 1 && (animations[i].leftIndex === length - 2 ||
+						document.getElementById(animations[i].leftIndex + 2).style.backgroundColor === 'lightgreen'))
+						document.getElementById(animations[i].leftIndex + 1).style.backgroundColor = 'lightgreen'
+					// checks if there are any bars from previous iteration that needs to be green
 					if (document.getElementById(animations[i].extra).style.backgroundColor !== 'lightgreen')
 						document.getElementById(animations[i].extra).style.backgroundColor = 'lightskyblue'
+					// check if any bars after pivot with the same height needs to be green
+					const height = document.getElementById(animations[i].leftIndex).style.height
+					let marker = animations[i].leftIndex + 1
+					while (marker < length &&
+						document.getElementById(marker).style.backgroundColor !== 'lightgreen' &&
+						document.getElementById(marker).style.height === height) {
+						document.getElementById(marker).style.backgroundColor = 'lightgreen'
+						marker++
+					}
 			}
 			i++
 		} else {
 			clearInterval(interval)
 		}
-
 	}, speed)
 }
 
@@ -69,7 +86,6 @@ const partition = (array, start, end) => {
 			addAnimation('curr', i, i - 1)
 		}
 	}
-
 	addAnimation('finish', newPivotIndex, end, i - 1)
 	swap(array, newPivotIndex, end)
 
