@@ -13,7 +13,6 @@ const quickSort = (array, speed) => {
 const runQuickSort = (array, start, end, speed) => {
 	if (start < end) {
 		let pivot = partition(array, start, end)
-		addAnimation('pivot', pivot) // color pivot
 		runQuickSort(array, start, pivot - 1, speed)
 		runQuickSort(array, pivot + 1, end, speed)
 		if (start === 0 && end === array.length - 1) animate(speed)
@@ -26,24 +25,26 @@ const animate = (speed) => {
 		if (i < animations.length) {
 			switch (animations[i].type) {
 				case 'curr':
-					document.getElementById(animations[i].index).style.backgroundColor = 'lightcoral'
-					break
-				case 'rem-curr':
-					document.getElementById(animations[i].index).style.backgroundColor = 'lightskyblue'
+					document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightcoral'
+					if (animations[i].rightIndex !== undefined &&
+						document.getElementById(animations[i].rightIndex).style.backgroundColor !== 'lightgreen')
+						document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightskyblue'
 					break
 				case 'swap':
 					swapAnimation(animations[i].leftIndex, animations[i].rightIndex)
+					document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightcoral'
+					if (animations[i].extra !== undefined &&
+						document.getElementById(animations[i].extra).style.backgroundColor !== 'lightgreen')
+						document.getElementById(animations[i].extra).style.backgroundColor = 'lightskyblue'
 					break
 				default:
-					document.getElementById(animations[i].index).style.backgroundColor = 'lightgreen'
+					swapAnimation(animations[i].leftIndex, animations[i].rightIndex)
+					document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightgreen'
+					if (document.getElementById(animations[i].extra).style.backgroundColor !== 'lightgreen')
+						document.getElementById(animations[i].extra).style.backgroundColor = 'lightskyblue'
 			}
 			i++
 		} else {
-			for (let i = 0; i < length; i++) {
-				if (document.getElementById(i).style.backgroundColor !== 'lightgreen') {
-					document.getElementById(i).style.backgroundColor = 'lightgreen'
-				}
-			}
 			clearInterval(interval)
 		}
 
@@ -54,37 +55,34 @@ const animate = (speed) => {
 const partition = (array, start, end) => {
 	let pivotValue = array[end]
 	let newPivotIndex = start
+	let i
 
-	for (let i = start; i < end; i++) {
-		if (i > start) addAnimation('rem-curr', i - 1)
-		addAnimation('curr', i)
+	for (i = start; i < end; i++) {
 		if (array[i] < pivotValue) {
-			addAnimation('swap', newPivotIndex, i)
+			if (i === start) addAnimation('curr', i, undefined)
+			else addAnimation('swap', newPivotIndex, i, i - 1)
 			swap(array, newPivotIndex, i)
 			newPivotIndex++
+		} else if (i === start) {
+			addAnimation('curr', i, undefined)
+		} else {
+			addAnimation('curr', i, i - 1)
 		}
 	}
 
-	addAnimation('rem-curr', end - 1)
-	addAnimation('swap', newPivotIndex, end)
+	addAnimation('finish', newPivotIndex, end, i - 1)
 	swap(array, newPivotIndex, end)
 
 	return newPivotIndex
 }
 
-const addAnimation = (type, id, otherID = 0) => {
-	if (type === 'swap') {
-		animations.push({
-			type: type,
-			leftIndex: id,
-			rightIndex: otherID
-		})
-	} else {
-		animations.push({
-			type: type,
-			index: id
-		})
-	}
+const addAnimation = (type, leftIndex, rightIndex, extra = 0) => {
+	animations.push({
+		type: type,
+		leftIndex: leftIndex,
+		rightIndex: rightIndex,
+		extra: extra
+	})
 }
 
 const stopQuickSort = () => {
