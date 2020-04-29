@@ -21,9 +21,10 @@ const runBubbleSort = (array) => {
 				else addAnimation('swap', i, i + 1, i - 1)
 				swap(array, i, i + 1)
 				swapped = true
+			} else if (i === 0) {
+				addAnimation('curr', i, i + 1, undefined)
 			} else {
-				if (i === 0) addAnimation('curr', i, i + 1, undefined)
-				else addAnimation('curr', i, i + 1, i - 1)
+				addAnimation('curr', i, i + 1, i - 1)
 			}
 		}
 		if (swapped) addAnimation('finish', i - 1, i, undefined)
