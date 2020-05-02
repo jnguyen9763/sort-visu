@@ -1,16 +1,18 @@
+import { loopAnimation } from './Animate.js'
 import { swap, swapAnimation } from './BubbleSort.js'
 
-let interval = null
+let i
 let length
 let comparisons
 let animations
 
-const selectionSort = (array, speed) => {
+const selectionSort = (array) => {
+	i = 0
 	length = array.length
 	comparisons = 0
 	animations = []
 	runSelectionSort(array)
-	animate(speed)
+	loopAnimation(animate)
 }
 
 const runSelectionSort = (array) => {
@@ -34,40 +36,36 @@ const runSelectionSort = (array) => {
 	}
 }
 
-const animate = (speed) => {
-	let i = 0
-	interval = setInterval(() => {
-		if (i < animations.length) {
-			switch (animations[i].type) {
-				case 'curr':
-					document.querySelector('#comparison').innerHTML = ++comparisons
-					document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightcoral'
-					if (document.getElementById(animations[i].rightIndex).style.backgroundColor !== 'lightgray')
-						document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightskyblue'
-					break
-				case 'min':
-					document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightgray'
-					if (animations[i].rightIndex !== undefined) {
-						document.querySelector('#comparison').innerHTML = ++comparisons
-						document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightskyblue'
-						document.getElementById(animations[i].extra).style.backgroundColor = 'lightskyblue'
-					}
-					break
-				default:
-					document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightgray'
-					swapAnimation(animations[i].rightIndex, animations[i].extra)
-					document.getElementById(length - 1).style.backgroundColor = 'lightskyblue'
-					document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightskyblue'
-					document.getElementById(animations[i].extra).style.backgroundColor = 'lightgreen'
+const animate = () => {
+	if (i >= animations.length) {
+		document.getElementById(length - 2).style.backgroundColor = 'lightgreen'
+		document.getElementById(length - 1).style.backgroundColor = 'lightgreen'
+		return false
+	}
+	switch (animations[i].type) {
+		case 'curr':
+			document.querySelector('#comparison').innerHTML = ++comparisons
+			document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightcoral'
+			if (document.getElementById(animations[i].rightIndex).style.backgroundColor !== 'lightgray')
+				document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightskyblue'
+			break
+		case 'min':
+			document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightgray'
+			if (animations[i].rightIndex !== undefined) {
+				document.querySelector('#comparison').innerHTML = ++comparisons
+				document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightskyblue'
+				document.getElementById(animations[i].extra).style.backgroundColor = 'lightskyblue'
 			}
-			i++
-		} else {
-			document.getElementById(length - 2).style.backgroundColor = 'lightgreen'
-			document.getElementById(length - 1).style.backgroundColor = 'lightgreen'
-			clearInterval(interval)
-		}
-
-	}, speed)
+			break
+		default:
+			document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightgray'
+			swapAnimation(animations[i].rightIndex, animations[i].extra)
+			document.getElementById(length - 1).style.backgroundColor = 'lightskyblue'
+			document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightskyblue'
+			document.getElementById(animations[i].extra).style.backgroundColor = 'lightgreen'
+	}
+	i++
+	return true
 }
 
 const addAnimation = (type, leftIndex, rightIndex, extra = 0) => {
@@ -79,8 +77,4 @@ const addAnimation = (type, leftIndex, rightIndex, extra = 0) => {
 	})
 }
 
-const stopSelectionSort = () => {
-	if (interval !== null) clearInterval(interval)
-}
-
-export { selectionSort, stopSelectionSort }
+export { selectionSort }

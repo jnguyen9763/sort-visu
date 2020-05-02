@@ -1,66 +1,63 @@
+import { loopAnimation } from './Animate.js'
 import { swap, swapAnimation } from './BubbleSort'
 
-let interval = null
+let i
 let length
 let comparisons
 let animations
 
-const quickSort = (array, speed) => {
+const quickSort = (array) => {
+	i = 0
 	length = array.length
 	comparisons = 0
 	animations = []
-	runQuickSort(array, 0, length - 1, speed)
+	runQuickSort(array, 0, length - 1)
 }
 
-const runQuickSort = (array, start, end, speed) => {
+const runQuickSort = (array, start, end) => {
 	if (start < end) {
 		let pivot = partition(array, start, end)
-		runQuickSort(array, start, pivot - 1, speed)
-		runQuickSort(array, pivot + 1, end, speed)
-		if (start === 0 && end === array.length - 1) animate(speed)
+		runQuickSort(array, start, pivot - 1)
+		runQuickSort(array, pivot + 1, end)
+		if (start === 0 && end === array.length - 1) loopAnimation(animate)
 	}
 }
 
-const animate = (speed) => {
-	let i = 0
-	interval = setInterval(() => {
-		if (i < animations.length) {
-			switch (animations[i].type) {
-				case 'curr':
-					document.querySelector('#comparison').innerHTML = ++comparisons
-					document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightcoral'
-					if (animations[i].rightIndex !== undefined &&
-						document.getElementById(animations[i].rightIndex).style.backgroundColor !== 'lightgreen')
-						document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightskyblue'
-					break
-				case 'swap':
-					document.querySelector('#comparison').innerHTML = ++comparisons
-					swapAnimation(animations[i].leftIndex, animations[i].rightIndex)
-					document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightcoral'
-					if (animations[i].extra !== undefined &&
-						document.getElementById(animations[i].extra).style.backgroundColor !== 'lightgreen')
-						document.getElementById(animations[i].extra).style.backgroundColor = 'lightskyblue'
-					break
-				default:
-					swapAnimation(animations[i].leftIndex, animations[i].rightIndex)
-					document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightgreen'
-					// checks if left bar needs to be green
-					if (animations[i].leftIndex > 0 && (animations[i].leftIndex === 1 ||
-						document.getElementById(animations[i].leftIndex - 2).style.backgroundColor === 'lightgreen'))
-						document.getElementById(animations[i].leftIndex - 1).style.backgroundColor = 'lightgreen'
-					// checks if right bar needs to be green
-					if (animations[i].leftIndex < length - 1 && (animations[i].leftIndex === length - 2 ||
-						document.getElementById(animations[i].leftIndex + 2).style.backgroundColor === 'lightgreen'))
-						document.getElementById(animations[i].leftIndex + 1).style.backgroundColor = 'lightgreen'
-					// checks if there are any bars from previous iteration that needs to be green
-					if (document.getElementById(animations[i].extra).style.backgroundColor !== 'lightgreen')
-						document.getElementById(animations[i].extra).style.backgroundColor = 'lightskyblue'
-			}
-			i++
-		} else {
-			clearInterval(interval)
-		}
-	}, speed)
+const animate = () => {
+	if (i >= animations.length) return false
+	switch (animations[i].type) {
+		case 'curr':
+			document.querySelector('#comparison').innerHTML = ++comparisons
+			document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightcoral'
+			if (animations[i].rightIndex !== undefined &&
+				document.getElementById(animations[i].rightIndex).style.backgroundColor !== 'lightgreen')
+				document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightskyblue'
+			break
+		case 'swap':
+			document.querySelector('#comparison').innerHTML = ++comparisons
+			swapAnimation(animations[i].leftIndex, animations[i].rightIndex)
+			document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightcoral'
+			if (animations[i].extra !== undefined &&
+				document.getElementById(animations[i].extra).style.backgroundColor !== 'lightgreen')
+				document.getElementById(animations[i].extra).style.backgroundColor = 'lightskyblue'
+			break
+		default:
+			swapAnimation(animations[i].leftIndex, animations[i].rightIndex)
+			document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightgreen'
+			// checks if left bar needs to be green
+			if (animations[i].leftIndex > 0 && (animations[i].leftIndex === 1 ||
+				document.getElementById(animations[i].leftIndex - 2).style.backgroundColor === 'lightgreen'))
+				document.getElementById(animations[i].leftIndex - 1).style.backgroundColor = 'lightgreen'
+			// checks if right bar needs to be green
+			if (animations[i].leftIndex < length - 1 && (animations[i].leftIndex === length - 2 ||
+				document.getElementById(animations[i].leftIndex + 2).style.backgroundColor === 'lightgreen'))
+				document.getElementById(animations[i].leftIndex + 1).style.backgroundColor = 'lightgreen'
+			// checks if there are any bars from previous iteration that needs to be green
+			if (document.getElementById(animations[i].extra).style.backgroundColor !== 'lightgreen')
+				document.getElementById(animations[i].extra).style.backgroundColor = 'lightskyblue'
+	}
+	i++
+	return true
 }
 
 // return the new index the pivot is at
@@ -96,8 +93,4 @@ const addAnimation = (type, leftIndex, rightIndex, extra = 0) => {
 	})
 }
 
-const stopQuickSort = () => {
-	if (interval !== null) clearInterval(interval)
-}
-
-export { quickSort, stopQuickSort }
+export { quickSort }

@@ -1,14 +1,16 @@
+import { loopAnimation } from './Animate.js'
 import { swapAnimation } from './BubbleSort.js'
 
-let interval = null
+let i
 let comparisons
 let animations
 
-const insertionSort = (array, speed) => {
+const insertionSort = (array) => {
+	i = 0
 	comparisons = 0
 	animations = []
 	runInsertionSort(array)
-	animate(speed)
+	loopAnimation(animate)
 }
 
 const runInsertionSort = (array) => {
@@ -28,28 +30,22 @@ const runInsertionSort = (array) => {
 	addAnimation('curr', undefined, prev)
 }
 
-const animate = (speed) => {
-	let i = 0
-	interval = setInterval(() => {
-		if (i < animations.length) {
-			if (animations[i].type === 'curr') {
-				if (animations[i].index !== undefined) {
-					document.querySelector('#comparison').innerHTML = ++comparisons
-					document.getElementById(animations[i].index).style.backgroundColor = 'lightcoral'
-				}
-				document.getElementById(animations[i].extra).style.backgroundColor = 'lightgreen'
-			} else {
-				document.querySelector('#comparison').innerHTML = ++comparisons
-				swapAnimation(animations[i].index, animations[i].extra)
-				document.getElementById(animations[i].index).style.backgroundColor = 'lightgreen'
-				document.getElementById(animations[i].extra).style.backgroundColor = 'lightcoral'
-			}
-			i++
-		} else {
-			clearInterval(interval)
+const animate = () => {
+	if (i >= animations.length) return false
+	if (animations[i].type === 'curr') {
+		if (animations[i].index !== undefined) {
+			document.querySelector('#comparison').innerHTML = ++comparisons
+			document.getElementById(animations[i].index).style.backgroundColor = 'lightcoral'
 		}
-
-	}, speed)
+		document.getElementById(animations[i].extra).style.backgroundColor = 'lightgreen'
+	} else {
+		document.querySelector('#comparison').innerHTML = ++comparisons
+		swapAnimation(animations[i].index, animations[i].extra)
+		document.getElementById(animations[i].index).style.backgroundColor = 'lightgreen'
+		document.getElementById(animations[i].extra).style.backgroundColor = 'lightcoral'
+	}
+	i++
+	return true
 }
 
 const addAnimation = (type, index, extra) => {
@@ -60,8 +56,4 @@ const addAnimation = (type, index, extra) => {
 	})
 }
 
-const stopInsertionSort = () => {
-	if (interval !== null) clearInterval(interval)
-}
-
-export { insertionSort, stopInsertionSort }
+export { insertionSort }

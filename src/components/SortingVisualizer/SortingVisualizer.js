@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import styles from './SortingVisualizer.module.css'
-import { bubbleSort, stopBubbleSort } from '../../algorithms/BubbleSort.js'
-import { insertionSort, stopInsertionSort } from '../../algorithms/InsertionSort.js'
-import { selectionSort, stopSelectionSort } from '../../algorithms/SelectionSort.js'
-import { quickSort, stopQuickSort } from '../../algorithms/QuickSort.js'
-import { mergeSort, stopMergeSort } from '../../algorithms/MergeSort.js'
-
+import { bubbleSort } from '../../algorithms/BubbleSort.js'
+import { insertionSort } from '../../algorithms/InsertionSort.js'
+import { selectionSort } from '../../algorithms/SelectionSort.js'
+import { quickSort } from '../../algorithms/QuickSort.js'
+import { mergeSort } from '../../algorithms/MergeSort.js'
+import { updateSpeed, stopAnimation } from '../../algorithms/Animate.js'
 
 const barWidth = 1
 const widthPercentage = 75
@@ -24,73 +24,49 @@ const generateRandomArray = () => {
 
 function SortingVisualizer() {
 	const [array, setArray] = useState(generateRandomArray())
-	const [currSort, setCurrSort] = useState('')
-	const [speed, setSpeed] = useState(1)
+	const speed = useRef(null)
+
+	useEffect(() => {
+		speed.current.value = 1
+	}, [])
 
 	const runBubbleSort = () => {
-		setCurrSort('bubbleSort')
 		resetArrayAnimation()
-		bubbleSort([...array], speed)
+		bubbleSort([...array])
 	}
 
 	const runInsertionSort = () => {
-		setCurrSort('insertionSort')
 		resetArrayAnimation()
-		insertionSort([...array], speed)
+		insertionSort([...array])
 	}
 
 	const runSelectionSort = () => {
-		setCurrSort('selectionSort')
 		resetArrayAnimation()
-		selectionSort([...array], speed)
+		selectionSort([...array])
 	}
 
 	const runQuickSort = () => {
-		setCurrSort('quickSort')
 		resetArrayAnimation()
-		quickSort([...array], speed)
+		quickSort([...array])
 	}
 
 	const runMergeSort = () => {
-		setCurrSort('mergeSort')
 		resetArrayAnimation()
-		mergeSort([...array], speed)
+		mergeSort([...array])
 	}
 
 	const resetArrayAnimation = () => {
 		document.querySelector('#comparison').innerHTML = 0
-		stop()
+		stopAnimation()
 		for (let i = 0; i < array.length; i++) {
 			document.getElementById(i).style.height = `${array[i]}vh`
 			document.getElementById(i).style.backgroundColor = 'lightskyblue'
 		}
 	}
 
-	const stop = () => {
-		switch (currSort) {
-			case 'bubbleSort':
-				stopBubbleSort()
-				break
-			case 'insertionSort':
-				stopInsertionSort()
-				break
-			case 'selectionSort':
-				stopSelectionSort()
-				break
-			case 'quickSort':
-				stopQuickSort()
-				break
-			case 'mergeSort':
-				stopMergeSort()
-				break
-			default:
-				break
-		}
-	}
-
 	const generate = () => {
 		document.querySelector('#comparison').innerHTML = 0
-		stop()
+		stopAnimation()
 		setArray(generateRandomArray())
 	}
 
@@ -110,7 +86,7 @@ function SortingVisualizer() {
 
 	return (
 		<>
-			<input type="text" value={speed} onChange={(e) => setSpeed(e.target.value)} />
+			<input type="range" min={1} max={1000} step={1} ref={speed} onChange={(e) => updateSpeed(e.target.value)} />
 			<button onClick={() => generate()}>Generate</button>
 			<button onClick={() => sortCurrentArray()}>Sort</button>
 			<button onClick={() => reverseSortCurrentArray()}>Reverse Sort</button>

@@ -1,14 +1,17 @@
-let interval = null
+import { loopAnimation } from './Animate.js'
+
+let i
 let length
 let animations
 let comparisons
 
-const bubbleSort = (array, speed) => {
+const bubbleSort = (array) => {
+	i = 0
 	length = array.length
 	animations = []
 	comparisons = 0
 	runBubbleSort(array)
-	animate(speed)
+	loopAnimation(animate)
 }
 
 const runBubbleSort = (array) => {
@@ -35,39 +38,37 @@ const runBubbleSort = (array) => {
 	} while (swapped)
 }
 
-const animate = (speed) => {
-	let i = 0
-	interval = setInterval(() => {
-		switch (animations[i].type) {
-			case 'curr':
-				document.querySelector('#comparison').innerHTML = ++comparisons
-				document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightcoral'
-				document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightcoral'
-				if (animations[i].extra !== undefined)
-					document.getElementById(animations[i].extra).style.backgroundColor = 'lightskyblue'
-				break
-			case 'finish':
-				if (animations[i].extra === undefined) {
-					document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightskyblue'
-					document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightgreen'
-				} else {
-					// for when bubble sort ends due to no more swaps
-					for (let index = 0; index < length - animations[i].extra; index++) {
-						document.getElementById(index).style.backgroundColor = 'lightgreen'
-					}
-					clearInterval(interval)
+const animate = () => {
+	switch (animations[i].type) {
+		case 'curr':
+			document.querySelector('#comparison').innerHTML = ++comparisons
+			document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightcoral'
+			document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightcoral'
+			if (animations[i].extra !== undefined)
+				document.getElementById(animations[i].extra).style.backgroundColor = 'lightskyblue'
+			break
+		case 'finish':
+			if (animations[i].extra === undefined) {
+				document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightskyblue'
+				document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightgreen'
+			} else {
+				// for when bubble sort ends due to no more swaps
+				for (let index = 0; index < length - animations[i].extra; index++) {
+					document.getElementById(index).style.backgroundColor = 'lightgreen'
 				}
-				break
-			default:
-				document.querySelector('#comparison').innerHTML = ++comparisons
-				swapAnimation(animations[i].leftIndex, animations[i].rightIndex)
-				document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightcoral'
-				document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightcoral'
-				if (animations[i].extra !== undefined)
-					document.getElementById(animations[i].extra).style.backgroundColor = 'lightskyblue'
-		}
-		i++
-	}, speed)
+				return false
+			}
+			break
+		default:
+			document.querySelector('#comparison').innerHTML = ++comparisons
+			swapAnimation(animations[i].leftIndex, animations[i].rightIndex)
+			document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightcoral'
+			document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightcoral'
+			if (animations[i].extra !== undefined)
+				document.getElementById(animations[i].extra).style.backgroundColor = 'lightskyblue'
+	}
+	i++
+	return true
 }
 
 const addAnimation = (type, leftIndex, rightIndex, extra) => {
@@ -77,10 +78,6 @@ const addAnimation = (type, leftIndex, rightIndex, extra) => {
 		rightIndex: rightIndex,
 		extra: extra
 	})
-}
-
-const stopBubbleSort = () => {
-	if (interval !== null) clearInterval(interval)
 }
 
 const swap = (array, leftIndex, rightIndex) => {
@@ -97,4 +94,4 @@ const swapAnimation = (leftIndex, rightIndex) => {
 	// document.getElementById(rightIndex).style.backgroundColor = 'orange'
 }
 
-export { bubbleSort, stopBubbleSort, swap, swapAnimation, addAnimation }
+export { bubbleSort, swap, swapAnimation, addAnimation }
