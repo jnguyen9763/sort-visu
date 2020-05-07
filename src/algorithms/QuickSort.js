@@ -1,5 +1,6 @@
 import { loopAnimation } from './Animate.js'
 import { swap, swapAnimation } from './BubbleSort'
+import { normal, curr, success } from './ColorScheme.js'
 
 let i
 let length
@@ -28,33 +29,33 @@ const animate = () => {
 	switch (animations[i].type) {
 		case 'curr':
 			document.querySelector('#comparison').innerHTML = ++comparisons
-			document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightcoral'
+			document.getElementById(animations[i].leftIndex).style.backgroundColor = curr
 			if (animations[i].rightIndex !== undefined &&
-				document.getElementById(animations[i].rightIndex).style.backgroundColor !== 'lightgreen')
-				document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightskyblue'
+				document.getElementById(animations[i].rightIndex).style.backgroundColor !== success)
+				document.getElementById(animations[i].rightIndex).style.backgroundColor = normal
 			break
 		case 'swap':
 			document.querySelector('#comparison').innerHTML = ++comparisons
 			swapAnimation(animations[i].leftIndex, animations[i].rightIndex)
-			document.getElementById(animations[i].rightIndex).style.backgroundColor = 'lightcoral'
+			document.getElementById(animations[i].rightIndex).style.backgroundColor = curr
 			if (animations[i].extra !== undefined &&
-				document.getElementById(animations[i].extra).style.backgroundColor !== 'lightgreen')
-				document.getElementById(animations[i].extra).style.backgroundColor = 'lightskyblue'
+				document.getElementById(animations[i].extra).style.backgroundColor !== success)
+				document.getElementById(animations[i].extra).style.backgroundColor = normal
 			break
 		default:
 			swapAnimation(animations[i].leftIndex, animations[i].rightIndex)
-			document.getElementById(animations[i].leftIndex).style.backgroundColor = 'lightgreen'
+			document.getElementById(animations[i].leftIndex).style.backgroundColor = success
 			// checks if left bar needs to be green
 			if (animations[i].leftIndex > 0 && (animations[i].leftIndex === 1 ||
-				document.getElementById(animations[i].leftIndex - 2).style.backgroundColor === 'lightgreen'))
-				document.getElementById(animations[i].leftIndex - 1).style.backgroundColor = 'lightgreen'
+				document.getElementById(animations[i].leftIndex - 2).style.backgroundColor === success))
+				document.getElementById(animations[i].leftIndex - 1).style.backgroundColor = success
 			// checks if right bar needs to be green
 			if (animations[i].leftIndex < length - 1 && (animations[i].leftIndex === length - 2 ||
-				document.getElementById(animations[i].leftIndex + 2).style.backgroundColor === 'lightgreen'))
-				document.getElementById(animations[i].leftIndex + 1).style.backgroundColor = 'lightgreen'
+				document.getElementById(animations[i].leftIndex + 2).style.backgroundColor === success))
+				document.getElementById(animations[i].leftIndex + 1).style.backgroundColor = success
 			// checks if there are any bars from previous iteration that needs to be green
-			if (document.getElementById(animations[i].extra).style.backgroundColor !== 'lightgreen')
-				document.getElementById(animations[i].extra).style.backgroundColor = 'lightskyblue'
+			if (document.getElementById(animations[i].extra).style.backgroundColor !== success)
+				document.getElementById(animations[i].extra).style.backgroundColor = normal
 	}
 	i++
 	return true

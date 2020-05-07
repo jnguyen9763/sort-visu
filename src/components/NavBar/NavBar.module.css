@@ -1,0 +1,20 @@
+.navbar {
+	background-color: #6a4c93;
+	display: flex;
+	align-items: center;
+}
+
+.sliders {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.sliders label {
+	font-size: small;
+	margin: 5px;
+}
+
+.sliders input {
+	width: 5vw;
+}

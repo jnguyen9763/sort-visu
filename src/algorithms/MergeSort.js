@@ -1,4 +1,5 @@
 import { loopAnimation } from './Animate.js'
+import { normal, curr, success } from './ColorScheme.js'
 
 let i
 let length
@@ -26,20 +27,20 @@ const runMergeSort = (array, start, end) => {
 const animate = () => {
 	if (i >= animations.length) {
 		for (let i = 0; i < length; i++) {
-			document.getElementById(i).style.backgroundColor = 'lightgreen'
+			document.getElementById(i).style.backgroundColor = success
 		}
 		return false
 	}
 	switch (animations[i].type) {
 		case 'new-height':
 			document.querySelector('#comparison').innerHTML = ++comparisons
-			document.getElementById(animations[i].index).style.backgroundColor = 'lightcoral'
+			document.getElementById(animations[i].index).style.backgroundColor = curr
 			if (animations[i].index > 0)
-				document.getElementById(animations[i].index - 1).style.backgroundColor = 'lightskyblue'
+				document.getElementById(animations[i].index - 1).style.backgroundColor = normal
 			document.getElementById(animations[i].index).style.height = animations[i].newHeight
 			break
 		default:
-			document.getElementById(animations[i].index).style.backgroundColor = 'lightskyblue'
+			document.getElementById(animations[i].index).style.backgroundColor = normal
 	}
 	i++
 	return true

@@ -1,5 +1,6 @@
 import { loopAnimation } from './Animate.js'
 import { swapAnimation } from './BubbleSort.js'
+import { curr, success } from './ColorScheme.js'
 
 let i
 let comparisons
@@ -35,14 +36,14 @@ const animate = () => {
 	if (animations[i].type === 'curr') {
 		if (animations[i].index !== undefined) {
 			document.querySelector('#comparison').innerHTML = ++comparisons
-			document.getElementById(animations[i].index).style.backgroundColor = 'lightcoral'
+			document.getElementById(animations[i].index).style.backgroundColor = curr
 		}
-		document.getElementById(animations[i].extra).style.backgroundColor = 'lightgreen'
+		document.getElementById(animations[i].extra).style.backgroundColor = success
 	} else {
 		document.querySelector('#comparison').innerHTML = ++comparisons
 		swapAnimation(animations[i].index, animations[i].extra)
-		document.getElementById(animations[i].index).style.backgroundColor = 'lightgreen'
-		document.getElementById(animations[i].extra).style.backgroundColor = 'lightcoral'
+		document.getElementById(animations[i].index).style.backgroundColor = success
+		document.getElementById(animations[i].extra).style.backgroundColor = curr
 	}
 	i++
 	return true

@@ -4,7 +4,6 @@ let animationFunction = null
 
 const updateSpeed = (newSpeed) => {
 	speed = newSpeed
-	console.log(speed)
 }
 
 const loopAnimation = (animate) => {
