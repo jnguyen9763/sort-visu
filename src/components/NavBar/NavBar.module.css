@@ -1,7 +1,17 @@
 .navbar {
-	background-color: #6a4c93;
+	background-color: #363537;
 	display: flex;
 	align-items: center;
+}
+
+.navbar button {
+	color: #F7F7FF;
+	font-size: large;
+	font-family: 'Roboto Condensed', sans-serif;
+	background-color: transparent;
+	border: none;
+	outline: none;
+	margin: 10px;
 }
 
 .sliders {
@@ -11,6 +21,7 @@
 }
 
 .sliders label {
+	color: #F7F7FF;
 	font-size: small;
 	margin: 5px;
 }

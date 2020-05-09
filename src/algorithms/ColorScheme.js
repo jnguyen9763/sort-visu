@@ -1,6 +1,6 @@
-const normal = '#1982c4'
-const curr = '#ff595e'
-const success = '#8ac926'
-const minimum = '#e2e2df'
+const normal = 'rgb(177, 229, 242)'
+const curr = 'rgb(240, 83, 101)'
+const success = 'rgb(23, 184, 144)'
+const minimum = 'rgb(206, 206, 206)'
 
 export { normal, curr, success, minimum }
